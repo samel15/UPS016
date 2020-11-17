@@ -2,12 +2,14 @@
 import csv
 import json
 import random
+import pathlib
 
 
 # Load JSON files - participants without weights
 def load_json_wow():
-    with open("data\\participants1.json.", "r", encoding="utf-8") as jsonfile:
-        participants = json.load(jsonfile)
+    path = pathlib.Path.cwd() / "data" / "participants1.json"
+    with path.open() as path:
+        participants = json.load(path)
         winner = ask_number("Choose the number of winners (1 - 5):", 1, 6)
         resume = random.sample(participants, winner)
         for row in resume:
@@ -19,16 +21,19 @@ def load_json_wow():
 # Load JSON files - participants with weights
 # (The weights are to enable the control of the probability of a given participant being drawn.)
 def load_json_ww():
-    with open("data\\participants2.json.", "r", encoding="utf-8") as jsonfile:
-        participants = json.load(jsonfile)
-
+    path = pathlib.Path.cwd() / "data" / "participants2.json"
+    with path.open() as path:
+        participants = json.load(path)
+        participant = {}
+        ids = []
+        weights = []
+        for participant in participants:
+            ids.append(participant['id'])
+            weights.append(participant['weight'])
+        print("ID", ids, "WAGI", weights, "Wszystko", participants)
         winner = ask_number("Choose the number of winners (1 - 5):", 1, 6)
-        for row in participants:
-            id_lottery = row["id"]
-            weight = row["weight"]
-            print("id", len(id_lottery))
-            print("weight", len(weight))
-            resume = random.choices(population=participants, weights=weight, k=winner)
+        resume = random.choices(population=ids, weights=weights, k=winner)
+        for row in resume:
             print("\n ", "ID:", row["id"])
             print("First Name:", row["first_name"])
             print("Last Name:", row["last_name"])
@@ -37,8 +42,10 @@ def load_json_ww():
 
 # Load CSV files - participants without weights
 def load_csv_wow():
-    with open("data\\participants1.csv.", "r", encoding="utf-8") as csvfile:
-        participants = csv.DictReader(csvfile)
+    path = pathlib.Path.cwd() / "data" / "participants1.csv"
+    with open(path) as path:
+        participants = csv.DictReader(path)
+        print(type(participants))
         winner = ask_number("Choose the number of winners (1 - 5):", 1, 6)
         resume = random.sample(list(participants), winner)
         for row in resume:
@@ -50,13 +57,20 @@ def load_csv_wow():
 # Load CSV files - participants with weights
 # (The weights are to enable the control of the probability of a given participant being drawn.)
 def load_csv_ww():
-    with open("data\\participants2.csv.", "r", encoding="utf-8") as csvfile:
-        participants_w = csv.DictReader(csvfile)
+    path = pathlib.Path.cwd() / "data" / "participants2.csv"
+    with open(path) as path:
+        participants = csv.DictReader(path)
+        participants = list(participants)
+        participant = {}
+        ids = []
+        weights = []
+        for participant in participants:
+            ids.append(participant['id'])
+            weights.append(participant['weight'])
+        print("ID", ids, "WAGI", weights, "Wszystko", participants)
         winner = ask_number("Choose the number of winners (1 - 5):", 1, 6)
-        for row in participants_w:
-            id_lottery = row["id"]
-            weight = row["weight"]
-            resume = random.choices(population=list(participants_w), weights=weight, k=winner)
+        resume = random.choices(population=participants, weights=weights, k=winner)
+        for row in resume:
             print("\n ", "ID:", row["id"])
             print("First Name:", row["first_name"])
             print("Last Name:", row["last_name"])
@@ -120,8 +134,7 @@ while choice != 0:
         # Load the function with the JSON file without weights
         if choose == "y":
             load_json_wow()
-            item_giveaway()
-            separate_prizes()
+
         # Load the function with the JSON file with weights
         elif choose == "n":
             load_json_ww()
