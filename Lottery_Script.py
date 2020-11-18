@@ -2,12 +2,12 @@
 import csv
 import json
 import random
-import pathlib
+from pathlib import Path
 
 
 # Load JSON files - participants without weights
 def load_json_wow():
-    path = pathlib.Path.cwd() / "data" / "participants1.json"
+    path = Path.cwd() / "data" / "participants1.json"
     with path.open() as path:
         participants = json.load(path)
         winner = ask_number("Choose the number of winners (1 - 5):", 1, 6)
@@ -21,7 +21,7 @@ def load_json_wow():
 # Load JSON files - participants with weights
 # (The weights are to enable the control of the probability of a given participant being drawn.)
 def load_json_ww():
-    path = pathlib.Path.cwd() / "data" / "participants2.json"
+    path = Path.cwd() / "data" / "participants2.json"
     with path.open() as path:
         participants = json.load(path)
         participant = {}
@@ -42,10 +42,9 @@ def load_json_ww():
 
 # Load CSV files - participants without weights
 def load_csv_wow():
-    path = pathlib.Path.cwd() / "data" / "participants1.csv"
+    path = Path.cwd() / "data" / "participants1.csv"
     with open(path) as path:
         participants = csv.DictReader(path)
-        print(type(participants))
         winner = ask_number("Choose the number of winners (1 - 5):", 1, 6)
         resume = random.sample(list(participants), winner)
         for row in resume:
@@ -57,7 +56,8 @@ def load_csv_wow():
 # Load CSV files - participants with weights
 # (The weights are to enable the control of the probability of a given participant being drawn.)
 def load_csv_ww():
-    path = pathlib.Path.cwd() / "data" / "participants2.csv"
+    """Load a CSV file - participants with weights and draw chosen number of winners"""
+    path = Path.cwd() / "data" / "participants2.csv"
     with open(path) as path:
         participants = csv.DictReader(path)
         participants = list(participants)
@@ -95,15 +95,31 @@ def ask_number(question, low, high):
 
 def item_giveaway():
     """Load the giveaway prize template"""
-    with open("data\\item_giveaway.json.", "r", encoding="utf-8") as jsonfile:
-        prize = json.load(jsonfile)
+    path = Path.cwd() / "data" / "item_giveaway.json"
+    with path.open() as path:
+        prize = json.load(path)
         print(prize)
+        print(type(prize))
+        print(prize.keys())
+        prizes = print(prize['prizes'])
+        print(type(prizes))
+        prizes = list
+        print(type(prizes))
+        print(prizes)
+        print(prizes['name'])
+        # for row in list_of_prizes:
+        #     print(row['name'])
+        # print(name_of_prize)
+        # for prize_w in prize:
+        #     ids.append(participant['id'])
+        #     weights.append(participant['weight'])
 
 
 def separate_prizes():
     """Load the separate prize template"""
-    with open("data\\separate_prizes.json.", "r", encoding="utf-8") as jsonfile:
-        prize = json.load(jsonfile)
+    path = Path.cwd() / "data" / "separate_prizes.json"
+    with path.open() as path:
+        prize = json.load(path)
         print(prize)
 
 
@@ -134,7 +150,8 @@ while choice != 0:
         # Load the function with the JSON file without weights
         if choose == "y":
             load_json_wow()
-
+            item_giveaway()
+            #separate_prizes()
         # Load the function with the JSON file with weights
         elif choose == "n":
             load_json_ww()
