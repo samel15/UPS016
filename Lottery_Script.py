@@ -3,6 +3,11 @@ import csv
 import json
 import random
 from pathlib import Path
+import click
+
+# The template of the 'requirements' text file containing names of external modules
+requirements = Path.cwd() / "data" / "requirements.txt"
+requirements.write_text('External modules:\n')
 
 
 # Load JSON files - participants without weights
@@ -12,10 +17,11 @@ def load_json_wow():
         participants = json.load(path)
         winner = ask_number("Choose the number of winners (1 - 5):", 1, 6)
         resume = random.sample(participants, winner)
+        print("\nOur reliable lottery machine has chosen lottery winners: ")
         for row in resume:
-            print("\n ", "ID:", row["id"])
-            print("First Name:", row["first_name"])
-            print("Last Name:", row["last_name"])
+            lottery_winners = f"\nCongratulations! \n~~ {row['first_name']} {row['last_name']} ~~ You are a winner one"
+            print(lottery_winners)
+            item_giveaway()
 
 
 # Load JSON files - participants with weights
@@ -24,20 +30,16 @@ def load_json_ww():
     path = Path.cwd() / "data" / "participants2.json"
     with path.open() as path:
         participants = json.load(path)
-        participant = {}
-        ids = []
         weights = []
         for participant in participants:
-            ids.append(participant['id'])
-            weights.append(participant['weight'])
-        print("ID", ids, "WAGI", weights, "Wszystko", participants)
+            weights.append(int(participant['weight']))
         winner = ask_number("Choose the number of winners (1 - 5):", 1, 6)
-        resume = random.choices(population=ids, weights=weights, k=winner)
+        resume = random.choices(population=participants, weights=weights, k=winner)
+        print("\nOur reliable lottery machine has chosen lottery winners: ")
         for row in resume:
-            print("\n ", "ID:", row["id"])
-            print("First Name:", row["first_name"])
-            print("Last Name:", row["last_name"])
-            print("Weight:", row["weight"])
+            lottery_winners = f"\nCongratulations! \n~~ {row['first_name']} {row['last_name']} ~~ You are a winner one"
+            print(lottery_winners)
+            item_giveaway()
 
 
 # Load CSV files - participants without weights
@@ -47,10 +49,11 @@ def load_csv_wow():
         participants = csv.DictReader(path)
         winner = ask_number("Choose the number of winners (1 - 5):", 1, 6)
         resume = random.sample(list(participants), winner)
+        print("\nOur reliable lottery machine has chosen lottery winners: ")
         for row in resume:
-            print("\n ", "ID:", row["id"])
-            print("First Name:", row["first_name"])
-            print("Last Name:", row["last_name"])
+            lottery_winners = f"\nCongratulations! \n~~ {row['first_name']} {row['last_name']} ~~ You are a winner one"
+            print(lottery_winners)
+            item_giveaway()
 
 
 # Load CSV files - participants with weights
@@ -59,22 +62,17 @@ def load_csv_ww():
     """Load a CSV file - participants with weights and draw chosen number of winners"""
     path = Path.cwd() / "data" / "participants2.csv"
     with open(path) as path:
-        participants = csv.DictReader(path)
-        participants = list(participants)
-        participant = {}
-        ids = []
+        participants = list(csv.DictReader(path))
         weights = []
         for participant in participants:
-            ids.append(participant['id'])
-            weights.append(participant['weight'])
-        print("ID", ids, "WAGI", weights, "Wszystko", participants)
+            weights.append(int(participant['weight']))
         winner = ask_number("Choose the number of winners (1 - 5):", 1, 6)
         resume = random.choices(population=participants, weights=weights, k=winner)
+        print("\nOur reliable lottery machine has chosen lottery winners: ")
         for row in resume:
-            print("\n ", "ID:", row["id"])
-            print("First Name:", row["first_name"])
-            print("Last Name:", row["last_name"])
-            print("Weight:", row["weight"])
+            lottery_winners = f"\nCongratulations! \n~~ {row['first_name']} {row['last_name']} ~~ You are a winner one"
+            print(lottery_winners)
+            item_giveaway()
 
 
 def ask_yes_no(question):
@@ -98,21 +96,12 @@ def item_giveaway():
     path = Path.cwd() / "data" / "item_giveaway.json"
     with path.open() as path:
         prize = json.load(path)
-        print(prize)
-        print(type(prize))
-        print(prize.keys())
-        prizes = print(prize['prizes'])
-        print(type(prizes))
-        prizes = list
-        print(type(prizes))
-        print(prizes)
-        print(prizes['name'])
-        # for row in list_of_prizes:
-        #     print(row['name'])
-        # print(name_of_prize)
-        # for prize_w in prize:
-        #     ids.append(participant['id'])
-        #     weights.append(participant['weight'])
+        print("As a winner you received a prize: ")
+        for name_of_prize in prize['prizes']:
+            name = (name_of_prize['name'])
+            print(name)
+        for amount_of_prizes in prize['prizes']:
+            amount = (int(amount_of_prizes['amount']))
 
 
 def separate_prizes():
@@ -120,7 +109,10 @@ def separate_prizes():
     path = Path.cwd() / "data" / "separate_prizes.json"
     with path.open() as path:
         prize = json.load(path)
-        print(prize)
+        print("As a winner you received a prize: ")
+        for name_of_prize in prize['prizes']:
+            name = print(name_of_prize['name'])
+            amount = (int(name_of_prize['amount']))
 
 
 choice = None
@@ -150,8 +142,7 @@ while choice != 0:
         # Load the function with the JSON file without weights
         if choose == "y":
             load_json_wow()
-            item_giveaway()
-            #separate_prizes()
+
         # Load the function with the JSON file with weights
         elif choose == "n":
             load_json_ww()
