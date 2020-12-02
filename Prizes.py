@@ -11,12 +11,13 @@ def item_giveaway():
     path = Path.cwd() / "data" / "item_giveaway.json"
     with path.open() as path:
         prize = json.load(path)
-        print("As a winner you received a prize: ")
+        prizes = []
         for name_of_prize in prize['prizes']:
-            name = (name_of_prize['name'])
-        for amount_of_prizes in prize['prizes']:
-            (int(amount_of_prizes['amount']))
-        return print(name)
+            name = name_of_prize['name']
+            prizes.append(name)
+            prizes.append(name)
+            prizes.append(name)
+        return prizes
 
 
 def separate_prizes():
@@ -27,7 +28,8 @@ def separate_prizes():
     path = Path.cwd() / "data" / "separate_prizes.json"
     with path.open() as path:
         prize = json.load(path)
-        print("As a winner you received a prize: ")
+        prizes = []
         for name_of_prize in prize['prizes']:
-            print(name_of_prize['name'])
-            int(name_of_prize['amount'])
+            name = name_of_prize['name']
+            prizes.append(name)
+        return prizes

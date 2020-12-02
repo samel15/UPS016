@@ -7,6 +7,8 @@ def ask_yes_no(question):
     response = None
     while response not in ("y", "n"):
         response = input(question).lower()
+        if response not in ("y", "n"):
+            print("\nEnter a correct value(y/n). \n")
     return response
 
 
@@ -20,5 +22,10 @@ def ask_number(question, low, high):
     """
     response = None
     while response not in range(low, high):
-        response = int(input(question))
+        try:
+            response = int(input(question))
+            if response not in range(low, high):
+                print("\nThe number out of range! Choose the number within the range, please.\n")
+        except ValueError:
+            print("\nEnter the number(int)! Remember it must be within the range.\n")
     return response
