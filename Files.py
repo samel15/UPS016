@@ -35,9 +35,10 @@ def load_json_wow():
             winners_tup = (awarded[i])
             print("Congrats you are a winner ~~", winners_tup[0], "~~", "and you receive: ", winners_tup[1])
 
-        # Display the rest of the winners without prizes
+        # Display the rest of the winners without prizes if they exist
         not_awarded = (winners[3:])
-        print("\nYou are also winners but the prizes are over. Nonetheless, Congratulations!")
+        if winner > 3:
+            print("\nYou are also a winner but the prizes are over. Nonetheless, Congratulations!")
         for i in range(len(not_awarded)):
             print("~~", not_awarded[i], "~~")
 
@@ -71,15 +72,16 @@ def load_json_ww():
             winners.append(lottery_winners)
 
         # Merge the list of drawn winners with the list with prizes (three prizes available only)
-        awarded = list(zip(winners, item_giveaway()))
-        # awarded = list(zip(winners, separate_prizes()))
+        #awarded = list(zip(winners, item_giveaway()))
+        awarded = list(zip(winners, separate_prizes()))
         for i in range(len(awarded)):
             winners_tup = (awarded[i])
             print("Congrats you are a winner ~~", winners_tup[0], "~~", "and you receive: ", winners_tup[1])
 
-        # Display the rest of the winners without prizes
+        # Display the rest of the winners without prizes if they exist
         not_awarded = (winners[3:])
-        print("\nYou are also winners but the prizes are over. Nonetheless, Congratulations!")
+        if winner > 3:
+            print("\nYou are also a winner but the prizes are over. Nonetheless, Congratulations!")
         for i in range(len(not_awarded)):
             print("~~", not_awarded[i], "~~")
 
@@ -112,9 +114,10 @@ def load_csv_wow():
             winners_tup = (awarded[i])
             print("Congrats you are a winner ~~", winners_tup[0], "~~", "and you receive: ", winners_tup[1])
 
-        # Display the rest of the winners without prizes
+        # Display the rest of the winners without prizes if they exist
         not_awarded = (winners[3:])
-        print("\nYou are also winners but the prizes are over. Nonetheless, Congratulations!")
+        if winner > 3:
+            print("\nYou are also a winner but the prizes are over. Nonetheless, Congratulations!")
         for i in range(len(not_awarded)):
             print("~~", not_awarded[i], "~~")
 
@@ -152,9 +155,10 @@ def load_csv_ww():
             winners_tup = (awarded[i])
             print("Congrats you are a winner ~~", winners_tup[0], "~~", "and you receive: ", winners_tup[1])
 
-        # Display the rest of the winners without prizes
+        # Display the rest of the winners without prizes if they exist
         not_awarded = (winners[3:])
-        print("\nYou are also winners but the prizes are over. Nonetheless, Congratulations!")
+        if winner > 3:
+            print("\nYou are also a winner but the prizes are over. Nonetheless, Congratulations!")
         for i in range(len(not_awarded)):
             print("~~", not_awarded[i], "~~")
 
